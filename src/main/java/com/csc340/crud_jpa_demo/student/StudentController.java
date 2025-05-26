@@ -1,6 +1,8 @@
 package com.csc340.crud_jpa_demo.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +52,12 @@ public class StudentController {
    */
   @GetMapping("/students/name")
   public Object getStudentsByName(@RequestParam String key) {
-    return studentService.getStudentsByName(key);
+    if (key != null) {
+      return studentService.getStudentsByName(key);
+    } else {
+      return studentService.getAllStudents();
+    }
+
   }
 
   /**
@@ -62,6 +69,18 @@ public class StudentController {
   @GetMapping("/students/major/{major}")
   public Object getStudentsByMajor(@PathVariable String major) {
     return studentService.getStudentsByMajor(major);
+  }
+
+  /**
+   * Endpoint to get honors students with GPA above a specified threshold
+   *
+   * @param gpa The GPA threshold for honors students
+   * @return List of honors students with GPA above the specified threshold
+   */
+  @GetMapping("/honors")
+  public Object getHonorsStudents(@RequestParam(name = "gpa", defaultValue = "3.0") double gpa) {
+    return new ResponseEntity<>(studentService.getHonorsStudents(gpa), HttpStatus.OK);
+
   }
 
   /**

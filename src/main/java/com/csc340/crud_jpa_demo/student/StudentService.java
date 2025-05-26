@@ -55,6 +55,16 @@ public class StudentService {
   }
 
   /**
+     * Fetch all students with a GPA above a threshold.
+     *
+     * @param gpa the threshold
+     * @return the list of matching Students
+     */
+    public Object getHonorsStudents(double gpa) {
+        return studentRepository.getHonorsStudents(gpa);
+    }
+
+  /**
    * Method to add a new student
    *
    * @param student The student to add
