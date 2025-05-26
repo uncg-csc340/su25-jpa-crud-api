@@ -77,7 +77,7 @@ public class StudentController {
    * @param gpa The GPA threshold for honors students
    * @return List of honors students with GPA above the specified threshold
    */
-  @GetMapping("/honors")
+  @GetMapping("/students/honors")
   public Object getHonorsStudents(@RequestParam(name = "gpa", defaultValue = "3.0") double gpa) {
     return new ResponseEntity<>(studentService.getHonorsStudents(gpa), HttpStatus.OK);
 
@@ -117,6 +117,29 @@ public class StudentController {
   public Object deleteStudent(@PathVariable Long id) {
     studentService.deleteStudent(id);
     return studentService.getAllStudents();
+  }
+
+  /**
+   * Endpoint to write a student to a JSON file
+   *
+   * @param student The student to write
+   * @return An empty string indicating success
+   */
+  @PostMapping("/students/writeFile")
+  public Object writeJson(@RequestBody Student student) {
+    studentService.writeJson(student);
+    return studentService.writeJson(student);
+  }
+
+  /**
+   * Endpoint to read a JSON file and return its contents
+   *
+   * @return The contents of the JSON file
+   */
+  @GetMapping("/students/readFile")
+  public Object readJson() {
+    return studentService.readJson();
+
   }
 
 }

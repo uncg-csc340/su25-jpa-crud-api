@@ -1,8 +1,13 @@
 package com.csc340.crud_jpa_demo.student;
 
+import java.io.IOException;
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * StudentService is a service class that handles the business logic for
@@ -55,14 +60,14 @@ public class StudentService {
   }
 
   /**
-     * Fetch all students with a GPA above a threshold.
-     *
-     * @param gpa the threshold
-     * @return the list of matching Students
-     */
-    public Object getHonorsStudents(double gpa) {
-        return studentRepository.getHonorsStudents(gpa);
-    }
+   * Fetch all students with a GPA above a threshold.
+   *
+   * @param gpa the threshold
+   * @return the list of matching Students
+   */
+  public Object getHonorsStudents(double gpa) {
+    return studentRepository.getHonorsStudents(gpa);
+  }
 
   /**
    * Method to add a new student
@@ -90,6 +95,39 @@ public class StudentService {
    */
   public void deleteStudent(Long studentId) {
     studentRepository.deleteById(studentId);
+  }
+
+  /**
+   * Method to write a student object to a JSON file
+   *
+   * @param student The student object to write
+   */
+  public String writeJson(Student student) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      objectMapper.writeValue(new File("students.json"), student);
+      return "Student written to JSON file successfully";
+    } catch (IOException e) {
+      e.printStackTrace();
+      return "Error writing student to JSON file";
+    }
+
+  }
+
+  /**
+   * Method to read a student object from a JSON file
+   *
+   * @return The student object read from the JSON file
+   */
+  public Object readJson() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      return objectMapper.readValue(new File("students.json"), Student.class);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+
   }
 
 }
