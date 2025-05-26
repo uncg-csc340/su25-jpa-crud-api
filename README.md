@@ -7,15 +7,15 @@ Simple CRUD API for Student Objects with JPA (Hibernate)
 
 ## Installation
 - Get the project
-    - clone  
+    - clone
         ```
       git clone https://github.com/uncg-csc340/su25-jpa-crud-api.git
-        ``` 
+        ```
     - OR download zip.
 - Open the project in VS Code.
 - This project is built to run with jdk 21.
 - [`/src/main/resources/application.properties`](https://github.com/uncg-csc340/su25-jpa-crud-api/blob/main/src/main/resources/application.properties) This file  is the configuration for the PostgreSQL database to use for the API.
-  - You MUST have the database up and running before running the project! 
+  - You MUST have the database up and running before running the project!
     - Login to your neon.tech account.
     - Locate your database project.
     - On the project dashboard, click on "Connect" and select Java.
@@ -27,7 +27,7 @@ Simple CRUD API for Student Objects with JPA (Hibernate)
 - We are using ORM (Object-Relational Mapping) to deal with databases. This is a technique that allows us to interact with a relational database using object-oriented programming principles.
 - JPA (Jakarta Persistence, formerly Java Persistence API) is a specification that defines ORM standards in Java. It provides an abstraction layer for ORM frameworks to make concrete implementations.
 - Hibernate: Hibernate is a popular ORM framework that implements JPA. It simplifies database operations by mapping Java objects to database tables and handling queries efficiently.
-Spring ORM allows seamless integration of Hibernate and JPA, making database interactions more manageable and reducing boilerplate code. 
+Spring ORM allows seamless integration of Hibernate and JPA, making database interactions more manageable and reducing boilerplate code.
 ### StudentX Java classes have different purposes: Separation of concerns!
 - [Entity](https://github.com/uncg-csc340/su25-jpa-crud-api/blob/0177d978f05d64aa8ba1aac34cee4829e5ec6049/src/main/java/com/csc340/crud_jpa_demo/student/Student.java#L9)
   - The Student class is annotated as an `@Entity `. This is used to map class attributes to database tables and SQL types.
@@ -46,13 +46,12 @@ Spring ORM allows seamless integration of Hibernate and JPA, making database int
   - Annotated as a `@Service`.
   - It is the go-between from controller to database. In here we define what functions we need from the repository. A lot of the functions are default functions that our repository inherits from JPA (save, delete, findAll, findByX), some of them are custom made (getHonorsStudents, getStudentsByName).
   - It asks the repository to perform SQL queries.
-  - The Repository class is [`@Autowired`](https://github.com/uncg-csc340/su25-jpa-crud-api/blob/0177d978f05d64aa8ba1aac34cee4829e5ec6049/src/main/java/com/csc340/crud_jpa_demo/student/StudentService.java#L15). This is for managing the dependency to the repository. Do not use a constructor to make a Repository object, you will get errors. 
+  - The Repository class is [`@Autowired`](https://github.com/uncg-csc340/su25-jpa-crud-api/blob/0177d978f05d64aa8ba1aac34cee4829e5ec6049/src/main/java/com/csc340/crud_jpa_demo/student/StudentService.java#L15). This is for managing the dependency to the repository. Do not use a constructor to make a Repository object, you will get errors.
 - [Rest Controller](https://github.com/uncg-csc340/su25-jpa-crud-api/blob/0177d978f05d64aa8ba1aac34cee4829e5ec6049/src/main/java/com/csc340/crud_jpa_demo/student/StudentController.java#L18)
   - Annotated as a `@RestController`.
   - It asks the Service class to perform data access functions.
   - The Service class is [`@Autowired`](https://github.com/uncg-csc340/su25-jpa-crud-api/blob/0177d978f05d64aa8ba1aac34cee4829e5ec6049/src/main/java/com/csc340/crud_jpa_demo/student/StudentController.java#L21) here as well :)
 
-## API Endpoints
 ## API Endpoints
 Base URL: [`http://localhost:8080/students`](http://localhost:8080/students)
 
@@ -138,8 +137,31 @@ Gets a list of students for a named major.
   }
 ]
 ```
+5. ### [`/honors`](http://localhost:8080/students/honors?gpa=3.5) (GET)
+Gets a list of students with a GPA meeting the Threshold.
 
-5. ### [`/`](http://localhost:8080/students) (POST)
+#### Parameters
+- query parameter: `gpa` &lt;Double&gt; - REQUIRED
+
+#### Response - A JSON array of Student objects.
+
+```
+[
+  {
+    "studentId": 1,
+    "name": "Alice Smith",
+    "major": "CSC",
+    "gpa": 3.88
+  },
+  {
+    "studentId": 7,
+    "name": "John Doe",
+    "major": "CSC",
+    "gpa": 3.65
+  }
+]
+```
+6. ### [`/`](http://localhost:8080/students) (POST)
 Create  a new Student entry
 
 #### Request Body
@@ -164,7 +186,7 @@ A student object. Note the object does not include an ID as this is autogenerate
   }
 ```
 
-6. ### [`/{studentId}`](http://localhost:8080/students/3) (PUT)
+7. ### [`/{studentId}`](http://localhost:8080/students/3) (PUT)
 Update an existing Student.
 
 #### Parameters
@@ -192,7 +214,7 @@ A student object with the updates.
 }
 ```
 
-7. ### [`/{studentId}`](http://localhost:8080/students/3) (DELETE)
+8. ### [`/{studentId}`](http://localhost:8080/students/3) (DELETE)
 Delete an existing Student.
 
 #### Parameters
